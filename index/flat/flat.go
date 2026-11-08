@@ -15,6 +15,18 @@ type Index struct {
 	IDs       map[string]struct{}
 }
 
+func NewIndex(dimension int) (*Index, error) {
+	if dimension < 1 {
+		return nil, errors.New("dimension must be at least 1")
+	}
+
+	return &Index{
+		Dimension: dimension,
+		Records:   make([]index.Record, 0),
+		IDs:       make(map[string]struct{}),
+	}, nil
+}
+
 func (i *Index) Add(record index.Record) error {
 	if record.Id == "" {
 		return fmt.Errorf("record Id must not be empty")
@@ -47,16 +59,4 @@ func (i *Index) Add(record index.Record) error {
 	i.IDs[record.Id] = struct{}{}
 
 	return nil
-}
-
-func NewIndex(dimension int) (*Index, error) {
-	if dimension < 1 {
-		return nil, errors.New("dimension must be at least 1")
-	}
-
-	return &Index{
-		Dimension: dimension,
-		Records:   make([]index.Record, 0),
-		IDs:       make(map[string]struct{}),
-	}, nil
 }
