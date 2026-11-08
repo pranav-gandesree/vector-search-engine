@@ -2,26 +2,53 @@ package main
 
 import (
 	"fmt"
+	"vector-search/index"
+	"vector-search/index/flat"
 	"vector-search/vector"
 )
 
 func main() {
-	v1 := vector.Vector{Values: []float64{3e200, 4e200}}
-	v2 := vector.Vector{Values: []float64{3e-200, 4e-200}}
+	idx, _ := flat.NewIndex(2)
 
-	// result, err := v1.Add(v2)
-	// if err != nil {
-	// 	fmt.Println("Error:", err)
-	// 	return
-	// }
-	// fmt.Println(result.Values)
+	record1 := index.Record{
+		Id:     "A",
+		Text:   "Database indexingg",
+		Vector: []float64{1, 0},
+	}
 
-	result1, _ := vector.Normalization(v1)
+	record2 := index.Record{
+		Id:     "B",
+		Text:   "vector search",
+		Vector: []float64{0, 1},
+	}
 
-	fmt.Println(result1.Values)
+	record3 := index.Record{
+		Id:     "C",
+		Text:   "vector search engine",
+		Vector: []float64{-1, 0},
+	}
 
-	result2, _ := vector.DotProduct(v1, v2)
+	record4 := index.Record{
+		Id:     "D",
+		Text:   "distributed systems",
+		Vector: []float64{1, 1},
+	}
 
-	fmt.Println(result2)
+	idx.Add(record1)
+	idx.Add(record2)
+	idx.Add(record3)
+	idx.Add(record4)
 
+	query := vector.Vector{Values: []float64{0, 1}}
+
+	results, err := idx.Search(query, 3)
+
+	if err != nil {
+		fmt.Println("Search error:", err)
+		return
+	}
+
+	for i, result := range results {
+		fmt.Printf("Search result %d: %+v\n", i+1, result)
+	}
 }
