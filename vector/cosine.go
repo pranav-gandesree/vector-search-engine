@@ -5,6 +5,10 @@ import (
 	"math"
 )
 
+type Vector struct {
+	Values []float64
+}
+
 // Implement normalization and cosine similarity here.
 func Normalization(vector Vector) (Vector, error) {
 

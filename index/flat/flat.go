@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"sort"
-
 	"vector-search/index"
 	"vector-search/vector"
 )
